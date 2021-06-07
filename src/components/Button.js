@@ -1,8 +1,15 @@
 import PropTypes from 'prop-types'
 
-const Button = ({color, text}) => {
+const Button = ({color, text, onClick}) => {
     //set button color and text based on input property
-    return <button style={{backgroundColor: color}} className="btn">{text}</button>
+    return (
+        <button 
+                //this onClick will call the prop onClick (the orange one) which will call the onClick function in Header.js
+                onClick={onClick} 
+                style={{backgroundColor: color}} 
+                className="btn">{text}
+        </button>
+    )
 }
 
 Button.defaultProps = {
@@ -11,7 +18,8 @@ Button.defaultProps = {
 
 Button.propTypes ={
     color: PropTypes.string,
-    text: PropTypes.string
+    text: PropTypes.string,
+    onClick: PropTypes.func
 }
 
 export default Button
