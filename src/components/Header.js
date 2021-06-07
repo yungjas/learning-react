@@ -4,8 +4,11 @@ import PropTypes from 'prop-types'
 //pass in title object to Header component ----> const Header = ({title})
 const Header = ({title}) => {
     return (
-        <header>
+        <header className="header">
+            {/* dynamic styling */}
+            {/* <h1 style={headingStyle}>{title}</h1> */}
             <h1>{title}</h1>
+            <button className="btn">Add</button>
         </header>
     )
 }
@@ -19,5 +22,11 @@ Header.defaultProps = {
 Header.propTypes = {
     title: PropTypes.string.isRequired,
 }
+
+//CSS - for dynamic styling
+// const headingStyle = {
+//     color: 'red', 
+//     backgroundColor: 'black',
+// }
 
 export default Header
