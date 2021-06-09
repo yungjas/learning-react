@@ -24,20 +24,27 @@ function App() {
           reminder: true
       },
       {
-          id: 1,
+          id: 3,
           text: "Food Shopping",
           day: "Feb 7th at 2.30pm",
           reminder: false
       },
   ])
   
+  //delete task
+  function deleteTask(id){
+    //for each task, i want to filter where the current task is not equal to the id of the task we are deleting
+    //basically this shows tasks that are not yet deleted
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
+
   return (
     //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
     <div className="container">
       <Header/>
       {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
       {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
-      <Tasks tasks={tasks}/>
+      <Tasks tasks={tasks} onDelete={deleteTask}/>
     </div>
   );
 }
