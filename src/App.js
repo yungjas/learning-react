@@ -44,7 +44,8 @@ function App() {
       <Header/>
       {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
       {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
-      <Tasks tasks={tasks} onDelete={deleteTask}/>
+      {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}
+      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask}/>) : ("No tasks to show")}
     </div>
   );
 }
