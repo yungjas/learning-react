@@ -35,6 +35,8 @@ function App() {
     //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
     <div className="container">
       <Header/>
+      {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
+      {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
       <Tasks tasks={tasks}/>
     </div>
   );
