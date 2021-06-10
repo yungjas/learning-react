@@ -1,8 +1,9 @@
 import {FaTimes} from "react-icons/fa"
 
-const Task = ({task, onDelete}) => {
+const Task = ({task, onDelete, onToggle}) => {
     return (
-        <div className="task">
+        //if task.reminder is true, then set the class of the div to task reminder, else set the class of the div to task
+        <div className={`task ${task.reminder ? "reminder" : ""}`} onDoubleClick={() => onToggle(task.id)}>
             <h3>
                 {task.text} 
                 {/* onDelete will work its way up (from Task component to Tasks component to App component) to call deleteTask function in App component */}

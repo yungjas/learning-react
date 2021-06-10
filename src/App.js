@@ -38,6 +38,16 @@ function App() {
     setTasks(tasks.filter((task) => task.id !== id))
   }
 
+  //toggle reminder
+  function toggleReminder(id){
+    setTasks(
+      tasks.map((task) =>
+        //if the id of the current iteration equals to the id that is passed in, copy all info of the task except change the reminder of the task to the opposite (i.e. if its currently true then it will be set to false and vice versa)
+        //else (from : onwards) there will be no change to the task 
+        //... is a spread operator, used in cases where we want to create a new object and its information is copied from another object, except that we are making a few changes to the information of the new object
+        task.id === id ? {...task, reminder: !task.reminder} : task))
+  }
+
   return (
     //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
     <div className="container">
@@ -45,7 +55,7 @@ function App() {
       {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
       {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
       {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}
-      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask}/>) : ("No tasks to show")}
+      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>) : ("No tasks to show")}
     </div>
   );
 }
