@@ -2,6 +2,7 @@
 import {useState} from "react"
 import Header from "./components/Header"
 import Tasks from "./components/Tasks"
+import AddTask from "./components/AddTask"
 
 function App() {
     //we want the data to be part of the component's state
@@ -31,6 +32,14 @@ function App() {
       },
   ])
   
+  //Add task
+  function addTask(task){
+    const id = Math.floor(Math.random() * 10000) + 1
+    const newTask = {id, ...task}
+    //copies current tasks that are already there (...tasks) and the newly added task
+    setTasks([...tasks, newTask])
+  }
+
   //delete task
   function deleteTask(id){
     //for each task, i want to filter where the current task is not equal to the id of the task we are deleting
@@ -52,6 +61,7 @@ function App() {
     //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
     <div className="container">
       <Header/>
+      <AddTask onAdd={addTask}/>
       {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
       {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
       {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}
