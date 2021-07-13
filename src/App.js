@@ -5,6 +5,8 @@ import Tasks from "./components/Tasks"
 import AddTask from "./components/AddTask"
 
 function App() {
+    const [showAddTask, setShowAddTask] = useState(false)
+  
     //we want the data to be part of the component's state
     //state is where you store property values that belongs to the component
     //when the state changes, the component will re-render
@@ -60,8 +62,9 @@ function App() {
   return (
     //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
     <div className="container">
-      <Header/>
-      <AddTask onAdd={addTask}/>
+      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
+      {/* if showAddTask is true, show the AddTask component */}
+      {showAddTask && <AddTask onAdd={addTask}/>}
       {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
       {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
       {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}

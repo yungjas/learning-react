@@ -3,10 +3,10 @@ import Button from './Button'
 
 //props is used to pass in stuff to our components
 //pass in title object to Header component ----> const Header = ({title})
-const Header = ({title}) => {
-    function onClick(){
-        console.log("Click")
-    }
+const Header = ({title, onAdd, showAdd}) => {
+    // function onClick(){
+    //     console.log("Click")
+    // }
     
     return (
         <header className="header">
@@ -15,7 +15,9 @@ const Header = ({title}) => {
             <h1>{title}</h1>
             {/* using props to pass in input to this button component */}
             {/* each button component can have different click events, hence we define a click event specifically for this button component using props */}
-            <Button color="green" text="Add" onClick={onClick}></Button>
+            {/* if showAdd is true (meaning the Add Task component is showing), the button will be red and its text will be Close */}
+            {/* else if showAdd is false (meaning the Add Task component is not showing), the button will be green and its text will be Add */}
+            <Button color={showAdd ? "red" : "green"} text={showAdd ? "Close" : "Add"} onClick={onAdd}></Button>
         </header>
     )
 }
