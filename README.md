@@ -2,6 +2,7 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 Following this tutorial: https://youtu.be/w7ejDZ8SWv8
+Production site: http://localhost:53179/
 
 ## Available Scripts
 
