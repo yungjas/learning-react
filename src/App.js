@@ -1,5 +1,6 @@
 //root App component
-import {useState} from "react"
+//useEffect - By using this Hook, you tell React that your component needs to do something after render
+import {useState, useEffect} from "react"
 import Header from "./components/Header"
 import Tasks from "./components/Tasks"
 import AddTask from "./components/AddTask"
@@ -13,31 +14,88 @@ function App() {
     //setTasks is a function used to update the state i.e. add more tasks
     //state is immutable, you can't change it directly --> can't use tasks.push to update the state
     //placing tasks here so that it becomes a global state i.e. every component can access it 
-    const [tasks, setTasks] = useState ([])
+    const [tasks, setTasks] = useState([])
+
+    useEffect(() => {
+      const getTasks = async () => {
+        const tasksFromServer = await fetchTasks()
+        setTasks(tasksFromServer)
+      }
+      
+      getTasks()
+    //an empty dependency array - dependency array is used to activate the useEffect when values inside the array (if any) changes
+    }, [])
+
+  //Fetch Tasks
+  const fetchTasks = async () => {
+    const res = await fetch("http://localhost:5000/tasks")
+    const data = await res.json()
+
+    return data
+  }
+
+  //Fetch Task
+  const fetchTask = async (id) => {
+    const res = await fetch(`http://localhost:5000/tasks/${id}`)
+    const data = await res.json()
+
+    return data
+  }
   
   //Add task
-  function addTask(task){
-    const id = Math.floor(Math.random() * 10000) + 1
-    const newTask = {id, ...task}
+  const addTask = async (task) => {
+    const res = await fetch("http://localhost:5000/tasks", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(task)
+    })
+    
+    const data = await res.json()
+
+    //copy new task (data) into existing tasks
+    setTasks([...tasks, data])
+
+    //const id = Math.floor(Math.random() * 10000) + 1
+    //const newTask = {id, ...task}
     //copies current tasks that are already there (...tasks) and the newly added task
-    setTasks([...tasks, newTask])
+    //setTasks([...tasks, newTask])
   }
 
   //delete task
-  function deleteTask(id){
+  const deleteTask = async (id) => {
+    await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "DELETE"
+    })
+    
     //for each task, i want to filter where the current task is not equal to the id of the task we are deleting
-    //basically this shows tasks that are not yet deleted
+    //basically this shows tasks that are not yet deleted in the UI
     setTasks(tasks.filter((task) => task.id !== id))
   }
 
   //toggle reminder
-  function toggleReminder(id){
+  const toggleReminder = async (id) => { 
+    const taskToToggle = await fetchTask(id)
+    //everything except the reminder info is not changed, hence use the spread operator
+    const updatedTask = {...taskToToggle, reminder: !taskToToggle.reminder}
+
+    const res = await fetch(`http://localhost:5000/tasks/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify(updatedTask)
+    })
+
+    const data = await res.json()
+    
     setTasks(
       tasks.map((task) =>
-        //if the id of the current iteration equals to the id that is passed in, copy all info of the task except change the reminder of the task to the opposite (i.e. if its currently true then it will be set to false and vice versa)
+        //if the id of the current iteration equals to the id that is passed in, copy all info of the updated task
         //else (from : onwards) there will be no change to the task 
         //... is a spread operator, used in cases where we want to create a new object and its information is copied from another object, except that we are making a few changes to the information of the new object
-        task.id === id ? {...task, reminder: !task.reminder} : task))
+        task.id === id ? {...task, reminder: data.reminder} : task))
   }
 
   return (
