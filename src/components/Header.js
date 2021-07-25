@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import {useLocation} from "react-router-dom"
 import Button from './Button'
 
 //props is used to pass in stuff to our components
@@ -7,7 +8,8 @@ const Header = ({title, onAdd, showAdd}) => {
     // function onClick(){
     //     console.log("Click")
     // }
-    
+    const location = useLocation()
+
     return (
         <header className="header">
             {/* dynamic styling */}
@@ -17,7 +19,8 @@ const Header = ({title, onAdd, showAdd}) => {
             {/* each button component can have different click events, hence we define a click event specifically for this button component using props */}
             {/* if showAdd is true (meaning the Add Task component is showing), the button will be red and its text will be Close */}
             {/* else if showAdd is false (meaning the Add Task component is not showing), the button will be green and its text will be Add */}
-            <Button color={showAdd ? "red" : "green"} text={showAdd ? "Close" : "Add"} onClick={onAdd}></Button>
+            {/* location.pathname - if we are at the homepage, show the add button, if not don't show */}
+            {location.pathname === "/" && (<Button color={showAdd ? "red" : "green"} text={showAdd ? "Close" : "Add"} onClick={onAdd}></Button>)}
         </header>
     )
 }

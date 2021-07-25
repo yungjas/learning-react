@@ -1,9 +1,12 @@
 //root App component
 //useEffect - By using this Hook, you tell React that your component needs to do something after render
 import {useState, useEffect} from "react"
+import {BrowserRouter as Router, Route} from "react-router-dom"
 import Header from "./components/Header"
 import Tasks from "./components/Tasks"
 import AddTask from "./components/AddTask"
+import Footer from "./components/Footer"
+import About from "./components/About"
 
 function App() {
     const [showAddTask, setShowAddTask] = useState(false)
@@ -99,16 +102,40 @@ function App() {
   }
 
   return (
-    //must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element
-    <div className="container">
-      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask}/>
-      {/* if showAddTask is true, show the AddTask component */}
-      {showAddTask && <AddTask onAdd={addTask}/>}
-      {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
-      {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
-      {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}
-      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder}/>) : ("No tasks to show")}
-    </div>
+    <Router>
+      {/* must only return one element, therefore if multiple elements need to be rendered, need to put it under one parent element */}
+      <div className="container">
+        <Header
+          onAdd={() => setShowAddTask(!showAddTask)}
+          showAdd={showAddTask}
+        />
+        {/* exact - checks url path and matches to "/" exactly to take us back to home page*/}
+        <Route
+          path="/"
+          exact
+          render={(props) => (
+            <>
+              {/* if showAddTask is true, show the AddTask component */}
+              {showAddTask && <AddTask onAdd={addTask} />}
+              {/* pass in tasks data (using props) into tasks component first (Tasks.js) */}
+              {/* Tasks component will then use the map function to go thru each task and display each task using the Task component (Task.js) */}
+              {/* if there are tasks, show the tasks, if no tasks then show the message no tasks to show */}
+              {tasks.length > 0 ? (
+                <Tasks
+                  tasks={tasks}
+                  onDelete={deleteTask}
+                  onToggle={toggleReminder}
+                />
+              ) : (
+                "No tasks to show"
+              )}
+            </>
+          )}
+        ></Route>
+        <Route path="/about" component={About}></Route>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
